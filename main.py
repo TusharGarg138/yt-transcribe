@@ -26,6 +26,18 @@ def download_video(url, path=DOWNLOAD_FOLDER):
         video_filename = os.path.join(path, f"{info['title']}.mp4")
     return video_filename
 
+# ========== STEP 4: Preprocess Transcript ==========
+def preprocess_transcript(transcript_path):
+    with open(transcript_path, "r", encoding="utf-8") as f:
+        text = f.read()
+    text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r'[^a-zA-Z0-9.,!? ]+', '', text)
+    text = text.strip()
+    preprocessed_path = transcript_path.replace(".txt", "_preprocessed.txt")
+    with open(preprocessed_path, "w", encoding="utf-8") as f:
+        f.write(text)
+    return text, preprocessed_path
+
 # ========== STEP 2: Extract Audio ==========
 def extract_audio(video_path):
     video_clip = VideoFileClip(video_path)
