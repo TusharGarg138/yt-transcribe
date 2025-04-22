@@ -16,3 +16,17 @@ Key Features:
 📄 Outputs both the full transcript and a short summary
 
 ------------------------------------------------------------------
+
+🛠 Tech Stack:
+
+Python
+
+Google Colab
+
+pytube – to download YouTube videos
+
+whisper – for transcription
+
+transformers – for text summarization
+
+torch, nltk, re – for preprocessing
