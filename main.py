@@ -32,3 +32,13 @@ def extract_audio(video_path):
     audio_path = video_path.replace(".mp4", ".mp3")
     video_clip.audio.write_audiofile(audio_path)
     return audio_path
+
+
+# ========== STEP 3: Transcribe ==========
+def generate_transcript(audio_path):
+    model = whisper.load_model("base")
+    result = model.transcribe(audio_path)
+    transcript_path = audio_path.replace(".mp3", ".txt")
+    with open(transcript_path, "w", encoding="utf-8") as f:
+        f.write(result["text"])
+    return transcript_path
