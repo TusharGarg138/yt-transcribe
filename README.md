@@ -30,3 +30,14 @@ whisper – for transcription
 transformers – for text summarization
 
 torch, nltk, re – for preprocessing
+
+-----------------------------------------------------------------
+
+🔥 Use Cases:
+Students looking to revise lectures quickly
+
+Content creators summarizing their own videos
+
+Busy professionals who want quick takeaways
+
+Anyone who hates watching long intros 😅
