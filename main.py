@@ -25,3 +25,10 @@ def download_video(url, path=DOWNLOAD_FOLDER):
         info = ydl.extract_info(url, download=True)
         video_filename = os.path.join(path, f"{info['title']}.mp4")
     return video_filename
+
+# ========== STEP 2: Extract Audio ==========
+def extract_audio(video_path):
+    video_clip = VideoFileClip(video_path)
+    audio_path = video_path.replace(".mp4", ".mp3")
+    video_clip.audio.write_audiofile(audio_path)
+    return audio_path
