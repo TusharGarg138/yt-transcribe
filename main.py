@@ -118,3 +118,27 @@ def youtube_summary_pipeline(url):
     audio_summary_path = os.path.join(DOWNLOAD_FOLDER, f"{base_filename}_summary_audio.mp3")
     summary_to_audio(summary, output_path=audio_summary_path)
     return summary, summary_file_path, audio_summary_path
+
+# ========== GRADIO INTERFACE ==========
+def summarize_youtube_video(url):
+    try:
+        summary, summary_path, audio_path = youtube_summary_pipeline(url)
+        return summary, summary_path, audio_path
+    except Exception as e:
+        return f"⚠️ Error: {str(e)}", None, None
+interface = gr.Interface(
+    fn=summarize_youtube_video,
+    inputs=gr.Textbox(label="📺 Enter YouTube Video URL"),
+    outputs=[
+        gr.Textbox(label="📝 Summarized Transcript"),
+        gr.File(label="⬇️ Download Summary as .txt"),
+        gr.Audio(label="🔊 Summary Audio", type="filepath")
+    ],
+    title="🎬 YouTube Video Summarizer",
+    description="Get a short summary of any YouTube video using Whisper + BART. Paste the link, and download your notes!",
+    theme="soft",
+    allow_flagging="never"
+)
+
+if __name__ == "__main__":
+    interface.launch()
