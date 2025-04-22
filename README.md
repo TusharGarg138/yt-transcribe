@@ -41,3 +41,7 @@ Content creators summarizing their own videos
 Busy professionals who want quick takeaways
 
 Anyone who hates watching long intros 😅
+
+-----------------------------------------------------------------
+
+"Why watch a 30-min video when your AI buddy can spill the tea in 30 seconds?" 😎
