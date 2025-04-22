@@ -105,3 +105,16 @@ def save_summary(summary_text, base_filename):
     with open(summary_path, "w", encoding="utf-8") as f:
         f.write(summary_text)
     return summary_path
+
+# ========== MAIN PIPELINE FUNCTION ==========
+def youtube_summary_pipeline(url):
+    video_path = download_video(url)
+    audio_path = extract_audio(video_path)
+    transcript_path = generate_transcript(audio_path)
+    text, _ = preprocess_transcript(transcript_path)
+    summary = summarize_transcript(text)
+    base_filename = os.path.splitext(os.path.basename(video_path))[0]
+    summary_file_path = save_summary(summary, base_filename)
+    audio_summary_path = os.path.join(DOWNLOAD_FOLDER, f"{base_filename}_summary_audio.mp3")
+    summary_to_audio(summary, output_path=audio_summary_path)
+    return summary, summary_file_path, audio_summary_path
