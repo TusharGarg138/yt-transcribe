@@ -54,3 +54,35 @@ def generate_transcript(audio_path):
     with open(transcript_path, "w", encoding="utf-8") as f:
         f.write(result["text"])
     return transcript_path
+
+# ========== STEP 5: Summarize ==========
+def chunk_text(text, max_length=1024):
+    sentences = text.split(". ")
+    chunks = []
+    current_chunk = ""
+    for sentence in sentences:
+        if len(current_chunk) + len(sentence) + 1 <= max_length:
+            current_chunk += sentence + ". "
+        else:
+            chunks.append(current_chunk.strip())
+            current_chunk = sentence + ". "
+    if current_chunk:
+        chunks.append(current_chunk.strip())
+    return chunks
+
+def summarize_transcript(text, model_name="facebook/bart-large-cnn"):
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    tokenizer = BartTokenizer.from_pretrained(model_name)
+    model = BartForConditionalGeneration.from_pretrained(model_name).to(device)
+    text_chunks = chunk_text(text)
+    summaries = []
+    for chunk in text_chunks:
+        tokens = tokenizer(chunk, truncation=True, padding="longest", max_length=1024, return_tensors="pt").to(device)
+        summary_ids = model.generate(**tokens, max_length=200, num_beams=5, length_penalty=2.0, early_stopping=True)
+        summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+        summaries.append(summary)
+    full_summary = " ".join(summaries)
+    bullet_summary = "\n".join([f"• {sentence.strip()}" for sentence in full_summary.split(". ") if sentence])
+    print("[INFO] Summary generated successfully.")
+    summary = bullet_summary
+    return summary
