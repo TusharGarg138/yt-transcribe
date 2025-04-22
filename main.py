@@ -87,6 +87,17 @@ def summarize_transcript(text, model_name="facebook/bart-large-cnn"):
     summary = bullet_summary
     return summary
 
+# ========== STEP 7: Convert Summary to Audio ==========
+def summary_to_audio(summary_text, output_path="summary_audio.mp3", lang="en"):
+    try:
+        tts = gTTS(text=summary_text, lang=lang)
+        tts.save(output_path)
+        print(f"[INFO] Audio summary saved: {output_path}")
+        return output_path
+    except Exception as e:
+        print(f"[ERROR] TTS conversion failed: {e}")
+        return None
+
 # ========== STEP 6: Save Summary ==========
 def save_summary(summary_text, base_filename):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
