@@ -86,3 +86,11 @@ def summarize_transcript(text, model_name="facebook/bart-large-cnn"):
     print("[INFO] Summary generated successfully.")
     summary = bullet_summary
     return summary
+
+# ========== STEP 6: Save Summary ==========
+def save_summary(summary_text, base_filename):
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    summary_path = os.path.join(DOWNLOAD_FOLDER, f"{base_filename}_summary_{timestamp}.txt")
+    with open(summary_path, "w", encoding="utf-8") as f:
+        f.write(summary_text)
+    return summary_path
